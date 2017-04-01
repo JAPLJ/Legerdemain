@@ -24,10 +24,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    chart.cpp
+    RandomChartGenerator.cpp \
+    Chart.cpp \
+    ChartGenerator.cpp \
+    ChartManager.cpp \
+    MainWindow.cpp \
+    Random.cpp \
+    Util.cpp
 
-HEADERS  += mainwindow.h \
-    chart.h
+HEADERS  += \
+    RandomChartGenerator.h \
+    Chart.h \
+    ChartGenerator.h \
+    ChartManager.h \
+    MainWindow.h \
+    Random.h \
+    Util.h \
+    Constants.h
 
 FORMS    += mainwindow.ui
