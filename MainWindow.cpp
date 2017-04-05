@@ -8,6 +8,7 @@
 #include "RandomChartGenerator.h"
 #include "ChartManager.h"
 #include "Constants.h"
+#include "Util.h"
 
 #include <iostream>
 #include <deque>
@@ -25,12 +26,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->widget->installEventFilter(this);
 
+    connect(ui->spinBoxBPM, SIGNAL(valueChanged(int)), this, SLOT(bpmChanged(int)));
+    connect(ui->sliderHighspeed, SIGNAL(valueChanged(int)), this, SLOT(sliderHSChanged(int)));
+    connect(ui->doubleSpinBoxHighspeed, SIGNAL(valueChanged(double)), this, SLOT(spinBoxHSChanged(double)));
+    connect(ui->sliderSuddenPlus, SIGNAL(valueChanged(int)), this, SLOT(sliderSUDpChanged(int)));
+    connect(ui->spinBoxSuddenPlus, SIGNAL(valueChanged(int)), this, SLOT(spinBoxSUDpChanged(int)));
+    lock_sudden_plus = false;
+    lock_highspeed = false;
+
     timer = unique_ptr<QTimer>(new QTimer(this));
     connect(timer.get(), SIGNAL(timeout()), this, SLOT(proceedTime()));
     timer->start(Constants::MilliSecPerFrame);
 
     gen = shared_ptr<ChartGenerator>(new RandomChartGenerator());
-    charts = unique_ptr<ChartManager>(new ChartManager(gen, gen, 2.5, 120));
+    charts = unique_ptr<ChartManager>(new ChartManager(gen, gen, 1.0, 150));
+    updateGreenNumber();
 
     chart_bg = unique_ptr<QPixmap>(new QPixmap(WIDTH, HEIGHT));
 
@@ -71,9 +81,105 @@ int MainWindow::getNoteXid(int lane) {
     return lane < 8 ? lane * 2 : (15 - lane) * 2;
 }
 
+void MainWindow::updateGreenNumber() {
+    ui->labelGreenNumber->setText(QString::number(static_cast<int>(charts->greenNumber())));
+}
+
 void MainWindow::proceedTime() {
     charts->nextFrame();
     ui->widget->update();
+}
+
+void MainWindow::bpmChanged(int bpm) {
+    const double cur_green = charts->greenNumber();
+    charts->setBPM(bpm);
+
+    if (ui->checkBoxFixGreenNumber->isChecked()) {
+        const double new_hs = Util::clip(0.5, Constants::GreenNumberCoef / (bpm * cur_green / (1 - charts->suddenPlus() / 1000.0)), 10.0);
+        charts->setHighSpeed(new_hs);
+
+        lock_sudden_plus = true;
+        ui->doubleSpinBoxHighspeed->setValue(new_hs);
+        ui->sliderHighspeed->setValue(static_cast<int>(new_hs * 100 + 0.5));
+        lock_sudden_plus = false;
+    }
+    updateGreenNumber();
+}
+
+void MainWindow::sliderHSChanged(int hs) {
+    const double cur_green = charts->greenNumber();
+    charts->setHighSpeed(hs / 100.0);
+    ui->doubleSpinBoxHighspeed->setValue(hs / 100.0);
+
+    if (ui->checkBoxFixGreenNumber->isChecked()) {
+        lock_highspeed = true;
+        adjustSUDpToFixGreen(cur_green);
+        lock_highspeed = false;
+    }
+    updateGreenNumber();
+}
+
+void MainWindow::spinBoxHSChanged(double hs) {
+    const double cur_green = charts->greenNumber();
+    charts->setHighSpeed(hs);
+    ui->sliderHighspeed->setValue(static_cast<int>(hs * 100.0 + 0.5));
+
+    if (ui->checkBoxFixGreenNumber->isChecked()) {
+        lock_highspeed = true;
+        adjustSUDpToFixGreen(cur_green);
+        lock_highspeed = false;
+    }
+    updateGreenNumber();
+}
+
+void MainWindow::sliderSUDpChanged(int sudp) {
+    const double cur_green = charts->greenNumber();
+    charts->setSuddenPlus(sudp);
+    ui->spinBoxSuddenPlus->setValue(sudp);
+
+    if (ui->checkBoxFixGreenNumber->isChecked()) {
+        lock_sudden_plus = true;
+        adjustHSToFixGreen(cur_green);
+        lock_sudden_plus = false;
+    }
+    updateGreenNumber();
+}
+
+void MainWindow::spinBoxSUDpChanged(int sudp) {
+    const double cur_green = charts->greenNumber();
+    charts->setSuddenPlus(sudp);
+    ui->sliderSuddenPlus->setValue(sudp);
+
+    if (ui->checkBoxFixGreenNumber->isChecked()) {
+        lock_sudden_plus = true;
+        adjustHSToFixGreen(cur_green);
+        lock_sudden_plus = false;
+    }
+    updateGreenNumber();
+}
+
+void MainWindow::adjustHSToFixGreen(double green_number) {
+    if (lock_highspeed) {
+        return;
+    }
+
+    const double sud_factor = 1.0 / (1 - charts->suddenPlus() / 1000.0);
+    const double highspeed = Util::clip(0.5, Constants::GreenNumberCoef / (sud_factor * charts->BPM() * green_number), 10.0);
+    charts->setHighSpeed(highspeed);
+    ui->doubleSpinBoxHighspeed->setValue(highspeed);
+    ui->sliderHighspeed->setValue(static_cast<int>(highspeed * 100 + 0.5));
+}
+
+void MainWindow::adjustSUDpToFixGreen(double green_number) {
+    if (lock_sudden_plus) {
+        return;
+    }
+
+    const double sud_factor = Constants::GreenNumberCoef / (charts->highSpeed() * charts->BPM() * green_number);
+    const int sud = Util::clip(0, static_cast<int>((-1.0 / sud_factor + 1) * 1000 + 0.5), 999);
+    charts->setSuddenPlus(sud);
+    ui->spinBoxSuddenPlus->setValue(sud);
+    ui->sliderSuddenPlus->setValue(sud);
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
@@ -107,6 +213,11 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             int idx = getNoteXid(note.lane);
             painter.fillRect(XS[note.lane], y - NOTE_HEIGHT, WIDTHS[idx], NOTE_HEIGHT, col);
         }
+
+        const int sud_height = HEIGHT * (charts->suddenPlus() / 1000.0);
+        const QColor sud_col(66, 66, 66);
+        painter.fillRect(0, 0, PLAYAREA_WIDTH, sud_height, sud_col);
+        painter.fillRect(PLAYAREA_WIDTH + CENTER_WIDTH, 0, PLAYAREA_WIDTH, sud_height, sud_col);
 
         return true;
     }

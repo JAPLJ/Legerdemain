@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <chrono>
+#include <iostream>
 
 ChartManager::ChartManager(
         const shared_ptr<ChartGenerator> &gen1p,
@@ -14,6 +15,7 @@ ChartManager::ChartManager(
 {
     gen[0] = gen1p;
     gen[1] = gen2p;
+    sudden_plus = 0;
 
     resetCharts();
 }
@@ -30,6 +32,19 @@ double ChartManager::highSpeed() const {
     return highspeed;
 }
 
+double ChartManager::BPM() const {
+    return bpm;
+}
+
+int ChartManager::suddenPlus() const {
+    return sudden_plus;
+}
+
+double ChartManager::greenNumber() const {
+    const double sud_factor = 1.0 / (1 - sudden_plus / 1000.0);
+    return Constants::GreenNumberCoef / (bpm * highspeed * sud_factor);
+}
+
 void ChartManager::setHighSpeed(double new_highspeed) {
     highspeed = new_highspeed;
     recalcVisibleNotes();
@@ -37,7 +52,11 @@ void ChartManager::setHighSpeed(double new_highspeed) {
 
 void ChartManager::setBPM(double new_bpm) {
     bpm = new_bpm;
-    recalcVisibleNotes();
+    resetCharts();
+}
+
+void ChartManager::setSuddenPlus(int new_sud) {
+    sudden_plus = new_sud;
 }
 
 void ChartManager::setGenerator(int side, const shared_ptr<ChartGenerator> &generator) {
@@ -51,6 +70,7 @@ void ChartManager::resetCharts() {
         gen[side]->generate(charts[side], Constants::NumBarsPrepared);
     }
     cur_t = 0;
+    wrap_count = 0;
     timer = std::chrono::system_clock::now();
     recalcVisibleNotes();
 }
@@ -83,9 +103,8 @@ void ChartManager::recalcVisibleNotes() {
 
 void ChartManager::nextFrame() {
     const auto cur = std::chrono::system_clock::now();
-    const int elapsed_msec = std::chrono::duration_cast<std::chrono::milliseconds>(cur - timer).count();
-    const double next_t = cur_t + bpm * elapsed_msec / 240000.0;
-    timer = cur;
+    const int64_t elapsed_msec = std::chrono::duration_cast<std::chrono::milliseconds>(cur - timer).count();
+    const double next_t = bpm * elapsed_msec / 240000.0 - wrap_count * Constants::NumBarsRegeneration;
 
     while (!visible_notes.empty()) {
         const ChartManager::VNote note = visible_notes[0];
@@ -122,6 +141,7 @@ void ChartManager::nextFrame() {
 
     cur_t = next_t;
     if (cur_t >= Constants::NumBarsRegeneration) {
+        ++wrap_count;
         cur_t -= Constants::NumBarsRegeneration;
         last_visible_bar = Constants::NumBarsRegeneration;
         for (ChartManager::VNote& note : visible_notes) {

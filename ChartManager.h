@@ -27,11 +27,13 @@ private:
     Chart charts[2];    // 1P side, 2P side
     shared_ptr<ChartGenerator> gen[2];
     double cur_t, highspeed, bpm;
+    int sudden_plus;
 
     int last_visible_bar, last_visible_pos;
     deque<VNote> visible_notes;
 
     std::chrono::system_clock::time_point timer;
+    int wrap_count;
 
     void recalcVisibleNotes();
 
@@ -43,9 +45,13 @@ public:
     const deque<VNote>& getVisibleNotes() const;
     double currentTime() const;
     double highSpeed() const;
+    double BPM() const;
+    double greenNumber() const;
+    int suddenPlus() const;
 
     void setHighSpeed(double new_highspeed);
     void setBPM(double new_bpm);
+    void setSuddenPlus(int new_sud);
     void setGenerator(int side, const shared_ptr<ChartGenerator>& generator);
     void resetCharts();
     void nextFrame();

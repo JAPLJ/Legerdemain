@@ -52,8 +52,18 @@ private:
 
     unique_ptr<QPixmap> chart_bg;
 
+    bool lock_sudden_plus, lock_highspeed;
+    void updateGreenNumber();
+    void adjustHSToFixGreen(double green_number);
+    void adjustSUDpToFixGreen(double green_number);
+
 private slots:
     void proceedTime();
+    void bpmChanged(int bpm);
+    void sliderHSChanged(int hs);
+    void spinBoxHSChanged(double hs);
+    void sliderSUDpChanged(int sudp);
+    void spinBoxSUDpChanged(int sudp);
 };
 
 #endif // MAINWINDOW_H
