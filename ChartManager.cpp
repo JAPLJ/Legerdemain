@@ -2,9 +2,9 @@
 
 #include "Constants.h"
 #include "Util.h"
-#include <cassert>
 
-#include <iostream>
+#include <cassert>
+#include <chrono>
 
 ChartManager::ChartManager(
         const shared_ptr<ChartGenerator> &gen1p,
@@ -51,6 +51,7 @@ void ChartManager::resetCharts() {
         gen[side]->generate(charts[side], Constants::NumBarsPrepared);
     }
     cur_t = 0;
+    timer = std::chrono::system_clock::now();
     recalcVisibleNotes();
 }
 
@@ -81,7 +82,10 @@ void ChartManager::recalcVisibleNotes() {
 }
 
 void ChartManager::nextFrame() {
-    const double next_t = cur_t + bpm * Constants::MilliSecPerFrame / 240000.0;
+    const auto cur = std::chrono::system_clock::now();
+    const int elapsed_msec = std::chrono::duration_cast<std::chrono::milliseconds>(cur - timer).count();
+    const double next_t = cur_t + bpm * elapsed_msec / 240000.0;
+    timer = cur;
 
     while (!visible_notes.empty()) {
         const ChartManager::VNote note = visible_notes[0];

@@ -4,8 +4,11 @@
 #include "Chart.h"
 #include "ChartGenerator.h"
 
+#include <QTime>
+
 #include <deque>
 #include <memory>
+#include <chrono>
 
 using std::deque;
 using std::shared_ptr;
@@ -26,8 +29,9 @@ private:
     double cur_t, highspeed, bpm;
 
     int last_visible_bar, last_visible_pos;
-
     deque<VNote> visible_notes;
+
+    std::chrono::system_clock::time_point timer;
 
     void recalcVisibleNotes();
 
