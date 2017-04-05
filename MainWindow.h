@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QPixmap>
 
 #include "ChartGenerator.h"
 #include "ChartManager.h"
@@ -43,10 +44,13 @@ private:
      */
     const int CENTER_WIDTH = 92;
     const int PLAYAREA_WIDTH = 288;
-    const int HEIGHT = 482;
+    const int WIDTH = 668, HEIGHT = 482;
     const int WIDTHS[15] = {60, 2, 34, 2, 26, 2, 34, 2, 26, 2, 34, 2, 26, 2, 34};
     const int COLS[15] = {0, 2, 0, 2, 1, 2, 0, 2, 1, 2, 0, 2, 1, 2, 0};
+    const int NOTE_HEIGHT = 10;
     static int XS[16];
+
+    unique_ptr<QPixmap> chart_bg;
 
 private slots:
     void proceedTime();

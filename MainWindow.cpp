@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QPainter>
+#include <QPixmap>
 
 #include "ChartGenerator.h"
 #include "RandomChartGenerator.h"
@@ -30,6 +31,36 @@ MainWindow::MainWindow(QWidget *parent) :
 
     gen = shared_ptr<ChartGenerator>(new RandomChartGenerator());
     charts = unique_ptr<ChartManager>(new ChartManager(gen, gen, 2.5, 120));
+
+    chart_bg = unique_ptr<QPixmap>(new QPixmap(WIDTH, HEIGHT));
+
+    // draw background
+    QPainter painter(chart_bg.get());
+    int xl = 0;
+    for (int side = 0; side < 2; ++side) {
+        for (int i = 0; i < 15; ++i) {
+            if (i % 2 == 0) {
+                XS[side * 8 + i / 2] = xl;
+            }
+            QColor col;
+            const int ii = side == 0 ? i : 14 - i;
+            if (COLS[ii] == 0) {
+                col = QColor(0, 0, 0);
+            } else if (COLS[ii] == 1) {
+                col = QColor(44, 44, 44);
+            } else {
+                col = QColor(144, 144, 144);
+            }
+            painter.fillRect(xl, 0, WIDTHS[ii], HEIGHT, col);
+            xl += WIDTHS[ii];
+        }
+        painter.fillRect(side * (PLAYAREA_WIDTH + CENTER_WIDTH), HEIGHT - 4, PLAYAREA_WIDTH, 4, QColor(255, 0, 0));
+
+        if (side == 0) {
+            painter.fillRect(xl, 0, 92, HEIGHT, QColor(180, 180, 180));
+            xl += 92;
+        }
+    }
 }
 
 int MainWindow::getNoteY(double timing, double past = 0.0) {
@@ -41,31 +72,8 @@ int MainWindow::getNoteXid(int lane) {
 }
 
 void MainWindow::proceedTime() {
-    const double prev_time = charts->currentTime();
     charts->nextFrame();
-
-    const deque<VNote>& notes = charts->getVisibleNotes();
-    QRegion reg;
-    for (const VNote& note : notes) {
-        int idx = getNoteXid(note.lane);
-        int py = getNoteY(note.timing, charts->currentTime() - prev_time);
-        int y = getNoteY(note.timing);
-        reg += QRect(XS[note.lane], py - 8, WIDTHS[idx], 8);
-        reg += QRect(XS[note.lane], y - 8, WIDTHS[idx], 8);
-    }
-
-    int hr = ceil(charts->currentTime());
-    while (hr <= 1 / charts->highSpeed() + charts->currentTime()) {
-        int py = getNoteY(hr, charts->currentTime() - prev_time);
-        int y = getNoteY(hr);
-        reg += QRect(0, y, PLAYAREA_WIDTH, 2);
-        reg += QRect(PLAYAREA_WIDTH + CENTER_WIDTH, y, PLAYAREA_WIDTH, 2);
-        reg += QRect(0, py, PLAYAREA_WIDTH, 2);
-        reg += QRect(PLAYAREA_WIDTH + CENTER_WIDTH, py, PLAYAREA_WIDTH, 2);
-        ++hr;
-    }
-
-    ui->widget->update(reg);
+    ui->widget->update();
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
@@ -75,31 +83,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
         const double t = charts->currentTime();
 
-        int xl = 0;
-        for (int side = 0; side < 2; ++side) {
-            for (int i = 0; i < 15; ++i) {
-                if (i % 2 == 0) {
-                    XS[side * 8 + i / 2] = xl;
-                }
-                QColor col;
-                const int ii = side == 0 ? i : 14 - i;
-                if (COLS[ii] == 0) {
-                    col = QColor(0, 0, 0);
-                } else if (COLS[ii] == 1) {
-                    col = QColor(44, 44, 44);
-                } else {
-                    col = QColor(144, 144, 144);
-                }
-                painter.fillRect(xl, 0, WIDTHS[ii], HEIGHT, col);
-                xl += WIDTHS[ii];
-            }
-            painter.fillRect(side * (PLAYAREA_WIDTH + CENTER_WIDTH), HEIGHT - 4, PLAYAREA_WIDTH, 4, QColor(255, 0, 0));
-
-            if (side == 0) {
-                painter.fillRect(xl, 0, 92, HEIGHT, QColor(180, 180, 180));
-                xl += 92;
-            }
-        }
+        painter.drawPixmap(0, 0, WIDTH, HEIGHT, *chart_bg);
 
         int hr = ceil(t);
         while (t <= hr && hr <= (1 / charts->highSpeed()) + t) {
@@ -121,7 +105,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
                 col = QColor(80, 140, 255);
             }
             int idx = getNoteXid(note.lane);
-            painter.fillRect(XS[note.lane], y - 8, WIDTHS[idx], 8, col);
+            painter.fillRect(XS[note.lane], y - NOTE_HEIGHT, WIDTHS[idx], NOTE_HEIGHT, col);
         }
 
         return true;
