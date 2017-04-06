@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     ChartManager.cpp \
     MainWindow.cpp \
     Random.cpp \
-    Util.cpp
+    Util.cpp \
+    RandomChartGeneratorConfigUI.cpp
 
 HEADERS  += \
     RandomChartGenerator.h \
@@ -42,6 +43,7 @@ HEADERS  += \
     MainWindow.h \
     Random.h \
     Util.h \
-    Constants.h
+    Constants.h \
+    RandomChartGeneratorConfigUI.h
 
 FORMS    += mainwindow.ui

@@ -38,9 +38,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer.get(), SIGNAL(timeout()), this, SLOT(proceedTime()));
     timer->start(Constants::MilliSecPerFrame);
 
-    gen = shared_ptr<ChartGenerator>(new RandomChartGenerator());
-    charts = unique_ptr<ChartManager>(new ChartManager(gen, gen, 1.0, 150));
+    rand_gen1p = shared_ptr<RandomChartGenerator>(new RandomChartGenerator(100, 0, 0, 0, 0));
+    rand_gen2p = shared_ptr<RandomChartGenerator>(new RandomChartGenerator(100, 0, 0, 0, 0));
+
+    gen1p = shared_ptr<ChartGenerator>(rand_gen1p);
+    gen2p = shared_ptr<ChartGenerator>(rand_gen2p);
+    charts = unique_ptr<ChartManager>(new ChartManager(gen1p, gen2p, 1.0, 150));
     updateGreenNumber();
+
+    ui->groupBox1Pconfig->initialize(this, rand_gen1p, ui->spinBox1P0, ui->spinBox1P1, ui->spinBox1P2, ui->spinBox1P3, ui->spinBox1P4);
+    ui->groupBox2Pconfig->initialize(this, rand_gen2p, ui->spinBox2P0, ui->spinBox2P1, ui->spinBox2P2, ui->spinBox2P3, ui->spinBox2P4);
+    updateDensityDisplay();
 
     chart_bg = unique_ptr<QPixmap>(new QPixmap(WIDTH, HEIGHT));
 
@@ -71,6 +79,17 @@ MainWindow::MainWindow(QWidget *parent) :
             xl += 92;
         }
     }
+}
+
+void MainWindow::updateDensityDisplay() {
+    const double nps1 = gen1p->expectedNotesPerBar() * (charts->BPM() / 4 / 60);
+    const double nps2 = gen2p->expectedNotesPerBar() * (charts->BPM() / 4 / 60);
+    ui->label1PDensityDisplay->setText(QString::number(nps1, 'g', 4));
+    ui->label2PDensityDisplay->setText(QString::number(nps2, 'g', 4));
+}
+
+void MainWindow::generatorSettingsChanged() {
+    charts->resetCharts();
 }
 
 int MainWindow::getNoteY(double timing, double past = 0.0) {
@@ -104,6 +123,7 @@ void MainWindow::bpmChanged(int bpm) {
         lock_sudden_plus = false;
     }
     updateGreenNumber();
+    updateDensityDisplay();
 }
 
 void MainWindow::sliderHSChanged(int hs) {

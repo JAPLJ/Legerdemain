@@ -7,6 +7,7 @@
 
 #include "ChartGenerator.h"
 #include "ChartManager.h"
+#include "RandomChartGeneratorConfigUI.h"
 
 #include <memory>
 #include <vector>
@@ -27,6 +28,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void updateDensityDisplay();
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -34,7 +37,9 @@ private:
     Ui::MainWindow *ui;
     unique_ptr<QTimer> timer;
 
-    shared_ptr<ChartGenerator> gen;
+    shared_ptr<ChartGenerator> gen1p, gen2p;
+    shared_ptr<RandomChartGenerator> rand_gen1p, rand_gen2p;
+
     unique_ptr<ChartManager> charts;
     int getNoteY(double timing, double past);
     int getNoteXid(int lane);
@@ -64,6 +69,7 @@ private slots:
     void spinBoxHSChanged(double hs);
     void sliderSUDpChanged(int sudp);
     void spinBoxSUDpChanged(int sudp);
+    void generatorSettingsChanged();
 };
 
 #endif // MAINWINDOW_H
