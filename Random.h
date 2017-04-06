@@ -16,6 +16,11 @@ private:
 
 public:
     static int randint(int lo, int hi);
+
+    template<typename T>
+    static void shuffle(T begin, T end) {
+        std::shuffle(begin, end, instance.mt);
+    }
 };
 
 #endif // RANDOM_H
