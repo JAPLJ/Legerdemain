@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>688</width>
+    <width>948</width>
     <height>569</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <widget class="QGLWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>140</x>
       <y>10</y>
       <width>668</width>
       <height>482</height>
@@ -27,7 +27,7 @@
    <widget class="QSlider" name="sliderHighspeed">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>580</x>
       <y>500</y>
       <width>141</width>
       <height>22</height>
@@ -52,7 +52,7 @@
    <widget class="QLabel" name="labelHighspeed">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>730</x>
       <y>503</y>
       <width>21</width>
       <height>16</height>
@@ -65,7 +65,7 @@
    <widget class="QDoubleSpinBox" name="doubleSpinBoxHighspeed">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>750</x>
       <y>500</y>
       <width>61</width>
       <height>24</height>
@@ -87,7 +87,7 @@
    <widget class="QLabel" name="labelGreenNumber">
     <property name="geometry">
      <rect>
-      <x>403</x>
+      <x>533</x>
       <y>500</y>
       <width>41</width>
       <height>21</height>
@@ -174,7 +174,7 @@
    <widget class="QCheckBox" name="checkBoxFixGreenNumber">
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>540</x>
       <y>520</y>
       <width>101</width>
       <height>20</height>
@@ -187,7 +187,7 @@
    <widget class="QSlider" name="sliderSuddenPlus">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>140</x>
       <y>500</y>
       <width>160</width>
       <height>22</height>
@@ -203,7 +203,7 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>420</x>
       <y>492</y>
       <width>111</width>
       <height>41</height>
@@ -262,10 +262,10 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="labelSuddenPlus">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>310</x>
       <y>503</y>
       <width>41</width>
       <height>16</height>
@@ -278,7 +278,7 @@
    <widget class="QSpinBox" name="spinBoxSuddenPlus">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>350</x>
       <y>500</y>
       <width>61</width>
       <height>24</height>
@@ -286,6 +286,470 @@
     </property>
     <property name="maximum">
      <number>999</number>
+    </property>
+   </widget>
+   <widget class="RandomChartGeneratorConfigUI" name="groupBox1Pconfig">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>120</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>1P 側密度</string>
+    </property>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox1P4">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>30</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label1P4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>35</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1分</string>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox1P3">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>60</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox1P2">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>90</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox1P1">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>120</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox1P0">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>150</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label1P3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>65</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>2分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label1P2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>95</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>4分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label1P1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>125</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>8分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label1P0">
+     <property name="geometry">
+      <rect>
+       <x>6</x>
+       <y>155</y>
+       <width>31</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>16分</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="RandomChartGeneratorConfigUI" name="groupBox2Pconfig">
+    <property name="geometry">
+     <rect>
+      <x>818</x>
+      <y>10</y>
+      <width>120</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>2P 側密度</string>
+    </property>
+    <widget class="QLabel" name="label2P4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>35</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label2P3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>65</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>2分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label2P2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>95</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>4分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label2P1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>125</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>8分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label2P0">
+     <property name="geometry">
+      <rect>
+       <x>6</x>
+       <y>155</y>
+       <width>31</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>16分</string>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox2P4">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>30</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox2P3">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>60</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox2P2">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>90</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox2P1">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>120</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+    </widget>
+    <widget class="QSpinBoxRandomChartGeneratorDensity" name="spinBox2P0">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>150</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="maximum">
+      <number>700</number>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label1PDensityDisplay">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>510</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>252</red>
+          <green>1</green>
+          <blue>7</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>252</red>
+          <green>1</green>
+          <blue>7</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>127</red>
+          <green>127</green>
+          <blue>127</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label1PDensity">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>500</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>密度 (notes/sec)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label2PDensity">
+    <property name="geometry">
+     <rect>
+      <x>828</x>
+      <y>500</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>密度 (notes/sec)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label2PDensityDisplay">
+    <property name="geometry">
+     <rect>
+      <x>838</x>
+      <y>510</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>252</red>
+          <green>1</green>
+          <blue>7</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>252</red>
+          <green>1</green>
+          <blue>7</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>127</red>
+          <green>127</green>
+          <blue>127</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <zorder>widget</zorder>
@@ -297,8 +761,14 @@
    <zorder>checkBoxFixGreenNumber</zorder>
    <zorder>sliderSuddenPlus</zorder>
    <zorder>frame</zorder>
-   <zorder>label</zorder>
+   <zorder>labelSuddenPlus</zorder>
    <zorder>spinBoxSuddenPlus</zorder>
+   <zorder>groupBox1Pconfig</zorder>
+   <zorder>groupBox2Pconfig</zorder>
+   <zorder>label1PDensityDisplay</zorder>
+   <zorder>label1PDensity</zorder>
+   <zorder>label2PDensity</zorder>
+   <zorder>label2PDensityDisplay</zorder>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="enabled">
@@ -310,7 +780,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>688</width>
+     <width>948</width>
      <height>22</height>
     </rect>
    </property>
@@ -322,6 +792,17 @@
    <class>QGLWidget</class>
    <extends>QWidget</extends>
    <header location="global">QGLWidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QSpinBoxRandomChartGeneratorDensity</class>
+   <extends>QSpinBox</extends>
+   <header>RandomChartGeneratorConfigUI.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RandomChartGeneratorConfigUI</class>
+   <extends>QGroupBox</extends>
+   <header>RandomChartGeneratorConfigUI.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
