@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QPixmap>
 
+#include "ChartColors.h"
 #include "ChartGenerator.h"
 #include "ChartManager.h"
 #include "RandomChartGeneratorConfigUI.h"
@@ -32,6 +33,7 @@ public:
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::MainWindow *ui;
@@ -55,7 +57,9 @@ private:
     const int NOTE_HEIGHT = 10;
     static int XS[16];
 
+    ChartColors colors;
     unique_ptr<QPixmap> chart_bg;
+    void drawBackground();
 
     bool lock_sudden_plus, lock_highspeed;
     void updateGreenNumber();
@@ -70,6 +74,8 @@ private slots:
     void sliderSUDpChanged(int sudp);
     void spinBoxSUDpChanged(int sudp);
     void generatorSettingsChanged();
+
+    void menuColorSettings();
 };
 
 #endif // MAINWINDOW_H

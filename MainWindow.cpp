@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QPixmap>
 
+#include "ChartColors.h"
+#include "ChartColorsDialog.h"
 #include "ChartGenerator.h"
 #include "RandomChartGenerator.h"
 #include "ChartManager.h"
@@ -25,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->widget->installEventFilter(this);
+
+    // menu signals/slots settings
+    connect(ui->colorSettings, SIGNAL(triggered()), this, SLOT(menuColorSettings()));
 
     connect(ui->spinBoxBPM, SIGNAL(valueChanged(int)), this, SLOT(bpmChanged(int)));
     connect(ui->sliderHighspeed, SIGNAL(valueChanged(int)), this, SLOT(sliderHSChanged(int)));
@@ -50,9 +55,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->groupBox2Pconfig->initialize(this, rand_gen2p, ui->spinBox2P0, ui->spinBox2P1, ui->spinBox2P2, ui->spinBox2P3, ui->spinBox2P4);
     updateDensityDisplay();
 
+    colors = ChartColors::fromFile(Constants::FileColorSettings);
     chart_bg = unique_ptr<QPixmap>(new QPixmap(WIDTH, HEIGHT));
+    drawBackground();
+}
 
-    // draw background
+void MainWindow::drawBackground() {
     QPainter painter(chart_bg.get());
     int xl = 0;
     for (int side = 0; side < 2; ++side) {
@@ -63,21 +71,30 @@ MainWindow::MainWindow(QWidget *parent) :
             QColor col;
             const int ii = side == 0 ? i : 14 - i;
             if (COLS[ii] == 0) {
-                col = QColor(0, 0, 0);
+                col = colors.whiteScratchLaneBG();
             } else if (COLS[ii] == 1) {
-                col = QColor(44, 44, 44);
+                col = colors.blackLaneBG();
             } else {
-                col = QColor(144, 144, 144);
+                col = colors.laneBoundary();
             }
             painter.fillRect(xl, 0, WIDTHS[ii], HEIGHT, col);
             xl += WIDTHS[ii];
         }
-        painter.fillRect(side * (PLAYAREA_WIDTH + CENTER_WIDTH), HEIGHT - 4, PLAYAREA_WIDTH, 4, QColor(255, 0, 0));
+        painter.fillRect(side * (PLAYAREA_WIDTH + CENTER_WIDTH), HEIGHT - 4, PLAYAREA_WIDTH, 4, colors.judgeLine());
 
         if (side == 0) {
-            painter.fillRect(xl, 0, 92, HEIGHT, QColor(180, 180, 180));
+            painter.fillRect(xl, 0, 92, HEIGHT, colors.playsidePartition());
             xl += 92;
         }
+    }
+}
+
+void MainWindow::menuColorSettings() {
+    unique_ptr<ChartColorsDialog> dialog(new ChartColorsDialog(this, colors));
+
+    if (dialog->exec() == QDialog::Accepted) {
+        colors = dialog->selectedColors();
+        drawBackground();
     }
 }
 
@@ -205,7 +222,7 @@ void MainWindow::adjustSUDpToFixGreen(double green_number) {
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     if (watched == ui->widget && event->type() == QEvent::Paint) {
         QPainter painter(ui->widget);
-        painter.setRenderHint(QPainter::Antialiasing, false);
+        painter.setRenderHint(QPainter::Antialiasing, true);
 
         const double t = charts->currentTime();
 
@@ -214,8 +231,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         int hr = ceil(t);
         while (t <= hr && hr <= (1 / charts->highSpeed()) + t) {
             const double y = getNoteY(hr);
-            painter.fillRect(0, y, PLAYAREA_WIDTH, 2, QColor(200, 200, 200));
-            painter.fillRect(PLAYAREA_WIDTH + CENTER_WIDTH, y, PLAYAREA_WIDTH, 2, QColor(200, 200, 200));
+            painter.fillRect(0, y, PLAYAREA_WIDTH, 2, colors.barLine());
+            painter.fillRect(PLAYAREA_WIDTH + CENTER_WIDTH, y, PLAYAREA_WIDTH, 2, colors.barLine());
             ++hr;
         }
 
@@ -224,24 +241,27 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
             const double y = getNoteY(note.timing);
             QColor col;
             if (note.lane == 0 || note.lane == 15) {
-                col = QColor(255, 0, 0);
+                col = colors.noteScratch();
             } else if ((note.lane / 8 + note.lane) % 2 == 1) {
-                col = QColor(230, 230, 230);
+                col = colors.noteWhite();
             } else {
-                col = QColor(80, 140, 255);
+                col = colors.noteBlack();
             }
             int idx = getNoteXid(note.lane);
             painter.fillRect(XS[note.lane], y - NOTE_HEIGHT, WIDTHS[idx], NOTE_HEIGHT, col);
         }
 
         const int sud_height = HEIGHT * (charts->suddenPlus() / 1000.0);
-        const QColor sud_col(66, 66, 66);
-        painter.fillRect(0, 0, PLAYAREA_WIDTH, sud_height, sud_col);
-        painter.fillRect(PLAYAREA_WIDTH + CENTER_WIDTH, 0, PLAYAREA_WIDTH, sud_height, sud_col);
+        painter.fillRect(0, 0, PLAYAREA_WIDTH, sud_height, colors.suddenPlus());
+        painter.fillRect(PLAYAREA_WIDTH + CENTER_WIDTH, 0, PLAYAREA_WIDTH, sud_height, colors.suddenPlus());
 
         return true;
     }
     return false;
+}
+
+void MainWindow::closeEvent(QCloseEvent *) {
+    colors.writeToFile(Constants::FileColorSettings);
 }
 
 MainWindow::~MainWindow()

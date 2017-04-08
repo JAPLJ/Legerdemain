@@ -784,7 +784,19 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>設定</string>
+    </property>
+    <addaction name="colorSettings"/>
+   </widget>
+   <addaction name="menuSettings"/>
   </widget>
+  <action name="colorSettings">
+   <property name="text">
+    <string>色の設定...</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

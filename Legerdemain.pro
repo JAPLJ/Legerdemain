@@ -33,7 +33,10 @@ SOURCES += main.cpp\
     MainWindow.cpp \
     Random.cpp \
     Util.cpp \
-    RandomChartGeneratorConfigUI.cpp
+    RandomChartGeneratorConfigUI.cpp \
+    ChartColors.cpp \
+    Constants.cpp \
+    ChartColorsDialog.cpp
 
 HEADERS  += \
     RandomChartGenerator.h \
@@ -44,6 +47,9 @@ HEADERS  += \
     Random.h \
     Util.h \
     Constants.h \
-    RandomChartGeneratorConfigUI.h
+    RandomChartGeneratorConfigUI.h \
+    ChartColors.h \
+    ChartColorsDialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    ChartColorsDialog.ui

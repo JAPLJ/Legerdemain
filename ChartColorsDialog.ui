@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ChartColorsDialog</class>
+ <widget class="QDialog" name="ChartColorsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>357</width>
+    <height>529</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>譜面色の設定</string>
+  </property>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>490</y>
+     <width>191</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QGLWidget" name="widgetPreview" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>250</y>
+     <width>334</width>
+     <height>241</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidgetColors">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>331</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <row>
+    <property name="text">
+     <string>白鍵/スクラッチレーン背景</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>黒鍵レーン背景</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>レーン境界</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>判定ライン</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>プレーサイド仕切り</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>小節線</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>白鍵</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>黒鍵</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>スクラッチ</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>SUDDEN+</string>
+    </property>
+   </row>
+   <column>
+    <property name="text">
+     <string>色</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="labePreview">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>230</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>プレビュー</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonInitialize">
+   <property name="geometry">
+    <rect>
+     <x>154</x>
+     <y>10</y>
+     <width>191</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>初期状態に戻す</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labeColorSettings">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>51</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>色の設定</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QGLWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QGLWidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>ChartColorsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>ChartColorsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
