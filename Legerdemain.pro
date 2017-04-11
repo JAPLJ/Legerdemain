@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     RandomChartGeneratorConfigUI.cpp \
     ChartColors.cpp \
     Constants.cpp \
-    ChartColorsDialog.cpp
+    ChartColorsDialog.cpp \
+    ProfileManager.cpp
 
 HEADERS  += \
     RandomChartGenerator.h \
@@ -49,7 +50,8 @@ HEADERS  += \
     Constants.h \
     RandomChartGeneratorConfigUI.h \
     ChartColors.h \
-    ChartColorsDialog.h
+    ChartColorsDialog.h \
+    ProfileManager.h
 
 FORMS    += mainwindow.ui \
     ChartColorsDialog.ui

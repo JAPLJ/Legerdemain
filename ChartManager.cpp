@@ -1,5 +1,7 @@
 #include "ChartManager.h"
 
+#include <QJsonObject>
+
 #include "Constants.h"
 #include "Util.h"
 
@@ -153,4 +155,44 @@ void ChartManager::nextFrame() {
         }
         recalcVisibleNotes();
     }
+}
+
+const QString ChartManager::settingNames[ChartManager::numJsonEntries] = {
+    "bpm", "highspeed", "sudden_plus"
+};
+
+void ChartManager::fromJson(const QJsonObject &settings) {
+    const double defaultBPM = 150;
+    const double defaultHighspeed = 2.0;
+    const int defaultSuddenPlus = 0;
+
+    setBPM(settings.value(settingNames[0]).toDouble(defaultBPM));
+    setHighSpeed(settings.value(settingNames[1]).toDouble(defaultHighspeed));
+    setSuddenPlus(settings.value(settingNames[2]).toInt(defaultSuddenPlus));
+}
+
+QJsonObject ChartManager::toJson() const {
+    QJsonObject settings;
+    settings[settingNames[0]] = BPM();
+    settings[settingNames[1]] = highSpeed();
+    settings[settingNames[2]] = suddenPlus();
+    return settings;
+}
+
+const QString ChartManager::generatorSettingNames[ChartManager::numGeneratorJsonEntries] = {
+    "gen1p", "gen2p"
+};
+
+void ChartManager::configureGeneratorsFromJson(const QJsonObject &settings) {
+    for (int side = 0; side < 2; ++side) {
+        gen[side]->fromJson(settings.value(generatorSettingNames[side]).toObject());
+    }
+}
+
+QJsonObject ChartManager::generatorsToJson() const {
+    QJsonObject settings;
+    for (int side = 0; side < 2; ++side) {
+        settings[generatorSettingNames[side]] = gen[side]->toJson();
+    }
+    return settings;
 }

@@ -752,23 +752,6 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <zorder>widget</zorder>
-   <zorder>spinBoxBPM</zorder>
-   <zorder>sliderHighspeed</zorder>
-   <zorder>labelHighspeed</zorder>
-   <zorder>doubleSpinBoxHighspeed</zorder>
-   <zorder>labelGreenNumber</zorder>
-   <zorder>checkBoxFixGreenNumber</zorder>
-   <zorder>sliderSuddenPlus</zorder>
-   <zorder>frame</zorder>
-   <zorder>labelSuddenPlus</zorder>
-   <zorder>spinBoxSuddenPlus</zorder>
-   <zorder>groupBox1Pconfig</zorder>
-   <zorder>groupBox2Pconfig</zorder>
-   <zorder>label1PDensityDisplay</zorder>
-   <zorder>label1PDensity</zorder>
-   <zorder>label2PDensity</zorder>
-   <zorder>label2PDensityDisplay</zorder>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="enabled">

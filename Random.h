@@ -1,6 +1,7 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
+#include <QtGlobal>
 #include <random>
 
 class Random
@@ -12,6 +13,7 @@ private:
     Random() {
         std::random_device rd;
         mt.seed(rd());
+        qsrand(rd());
     }
 
 public:

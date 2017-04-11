@@ -1,5 +1,8 @@
 #include "RandomChartGenerator.h"
 
+#include <QJsonObject>
+#include <QJsonArray>
+
 #include "Chart.h"
 #include "Util.h"
 #include "Random.h"
@@ -81,4 +84,35 @@ void RandomChartGenerator::generate(Chart &chart, int bars) {
             num_last = Util::popcount(last);
         }
     }
+}
+
+const QString RandomChartGenerator::settingNames[RandomChartGenerator::numJsonEntries] = {
+    "density"
+};
+
+void RandomChartGenerator::fromJson(const QJsonObject &settings) {
+    const int defaultDensity[5] = {100, 0, 0, 0, 0};
+
+    QJsonArray density_arr = settings[settingNames[0]].toArray();
+    for (int i = 0; i < 5; ++i) {
+        setDensity(i, density_arr[i].toInt(defaultDensity[i]));
+    }
+}
+
+QJsonObject RandomChartGenerator::toJson() const {
+    QJsonObject settings;
+    QJsonArray density_arr;
+
+    for (int i = 0; i < 5; ++i) {
+        density_arr.append(density[i]);
+    }
+    settings[settingNames[0]] = density_arr;
+
+    return settings;
+}
+
+const QString RandomChartGenerator::name = "random_chart_generator";
+
+QString RandomChartGenerator::getName() {
+    return name;
 }

@@ -14,6 +14,7 @@ public:
     static const int GreenNumberCoef = 174000;
 
     static const QString FileColorSettings;
+    static const QString FileProfiles;
 };
 
 #endif // CONSTANTS_H

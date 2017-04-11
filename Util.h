@@ -1,6 +1,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <QJsonObject>
+
 #include <bitset>
 #include <limits>
 #include <algorithm>

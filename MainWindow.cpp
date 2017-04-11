@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // menu signals/slots settings
     connect(ui->colorSettings, SIGNAL(triggered()), this, SLOT(menuColorSettings()));
 
+    // ui signals/slots settings
     connect(ui->spinBoxBPM, SIGNAL(valueChanged(int)), this, SLOT(bpmChanged(int)));
     connect(ui->sliderHighspeed, SIGNAL(valueChanged(int)), this, SLOT(sliderHSChanged(int)));
     connect(ui->doubleSpinBoxHighspeed, SIGNAL(valueChanged(double)), this, SLOT(spinBoxHSChanged(double)));

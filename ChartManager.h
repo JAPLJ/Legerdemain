@@ -5,6 +5,7 @@
 #include "ChartGenerator.h"
 
 #include <QTime>
+#include <QJsonObject>
 
 #include <deque>
 #include <memory>
@@ -24,6 +25,12 @@ public:
     };
 
 private:
+    static const int numJsonEntries = 3;
+    static const QString settingNames[numJsonEntries];
+
+    static const int numGeneratorJsonEntries = 2;
+    static const QString generatorSettingNames[numGeneratorJsonEntries];
+
     Chart charts[2];    // 1P side, 2P side
     shared_ptr<ChartGenerator> gen[2];
     double cur_t, highspeed, bpm;
@@ -55,6 +62,12 @@ public:
     void setGenerator(int side, const shared_ptr<ChartGenerator>& generator);
     void resetCharts();
     void nextFrame();
+
+    void fromJson(const QJsonObject& settings);
+    QJsonObject toJson() const;
+
+    void configureGeneratorsFromJson(const QJsonObject& settings);
+    QJsonObject generatorsToJson() const;
 };
 
 #endif // CHARTMANAGER_H
