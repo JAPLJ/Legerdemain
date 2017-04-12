@@ -20,6 +20,10 @@ void RandomChartGenerator::setDensity(int granularity, int density) {
     this->density[granularity] = Util::clip(0, density, 700);
 }
 
+int RandomChartGenerator::getDensity(int granularity) const {
+    return density[granularity];
+}
+
 double RandomChartGenerator::expectedNotesPerBar() const {
     double res = 0.0;
     for (int i = 0; i < 5; ++i) {

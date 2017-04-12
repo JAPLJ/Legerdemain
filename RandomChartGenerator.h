@@ -13,6 +13,7 @@ public:
     virtual void generate(Chart &chart, int bars);
 
     void setDensity(int granularity, int density);
+    int getDensity(int granularity) const;
     virtual double expectedNotesPerBar() const;
 
     virtual void fromJson(const QJsonObject &settings);

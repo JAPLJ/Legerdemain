@@ -38,3 +38,9 @@ void RandomChartGeneratorConfigUI::initialize(
 void RandomChartGeneratorConfigUI::updateDensity() {
     dynamic_cast<MainWindow*>(parent()->parent())->updateDensityDisplay();
 }
+
+void RandomChartGeneratorConfigUI::generatorUpdated() {
+    for (int i = 0; i < 5; ++i) {
+        spinBoxDensity[i]->setValue(gen->getDensity(i));
+    }
+}

@@ -48,6 +48,8 @@ public:
                     QSpinBoxRandomChartGeneratorDensity* spinBox2,
                     QSpinBoxRandomChartGeneratorDensity* spinBox1);
     void updateDensity();
+
+    void generatorUpdated();
 };
 
 #endif // RANDOMCHARTGENERATORCONFIGUI_H

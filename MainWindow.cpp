@@ -10,13 +10,16 @@
 #include "RandomChartGenerator.h"
 #include "ChartManager.h"
 #include "Constants.h"
+#include "ProfileManager.h"
 #include "Util.h"
 
-#include <iostream>
 #include <deque>
 #include <cmath>
+#include <memory>
 
 using std::deque;
+using std::unique_ptr;
+using std::shared_ptr;
 using VNote = ChartManager::VNote;
 
 int MainWindow::XS[16];
@@ -59,6 +62,28 @@ MainWindow::MainWindow(QWidget *parent) :
     colors = ChartColors::fromFile(Constants::FileColorSettings);
     chart_bg = unique_ptr<QPixmap>(new QPixmap(WIDTH, HEIGHT));
     drawBackground();
+
+    profiles = unique_ptr<ProfileManager>(new ProfileManager());
+    profiles->fromFile(Constants::FileProfiles);
+    profile_entries = profiles->getEntries();
+    selectProfile(0);
+}
+
+void MainWindow::selectProfile(int idx) {
+    ProfileManager::ProfileContents prof = profiles->readProfile(profile_entries[idx].id);
+
+    charts->fromJson(prof.chart_manager_settings);
+    charts->configureGeneratorsFromJson(prof.generator_settings);
+    generatorSettingsChanged();
+
+    bool fix_green = ui->checkBoxFixGreenNumber->isChecked();
+    ui->checkBoxFixGreenNumber->setChecked(false);
+    ui->doubleSpinBoxHighspeed->setValue(charts->highSpeed());
+    ui->spinBoxSuddenPlus->setValue(charts->suddenPlus());
+    ui->checkBoxFixGreenNumber->setChecked(fix_green);
+
+    ui->groupBox1Pconfig->generatorUpdated();
+    ui->groupBox2Pconfig->generatorUpdated();
 }
 
 void MainWindow::drawBackground() {
@@ -108,6 +133,7 @@ void MainWindow::updateDensityDisplay() {
 
 void MainWindow::generatorSettingsChanged() {
     charts->resetCharts();
+    updateDensityDisplay();
 }
 
 int MainWindow::getNoteY(double timing, double past = 0.0) {
@@ -263,6 +289,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
 void MainWindow::closeEvent(QCloseEvent *) {
     colors.writeToFile(Constants::FileColorSettings);
+
+    ProfileManager::ProfileContents prof;
+    prof.chart_manager_settings = charts->toJson();
+    prof.generator_types.append(rand_gen1p->getName());
+    prof.generator_types.append(rand_gen2p->getName());
+    prof.generator_settings = charts->generatorsToJson();
+
+    profiles->updateProfile(profile_entries[0].id, prof, "default");
+    profiles->writeToFile(Constants::FileProfiles);
 }
 
 MainWindow::~MainWindow()

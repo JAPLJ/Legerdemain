@@ -8,6 +8,7 @@
 #include "ChartColors.h"
 #include "ChartGenerator.h"
 #include "ChartManager.h"
+#include "ProfileManager.h"
 #include "RandomChartGeneratorConfigUI.h"
 
 #include <memory>
@@ -45,6 +46,10 @@ private:
     unique_ptr<ChartManager> charts;
     int getNoteY(double timing, double past);
     int getNoteXid(int lane);
+
+    unique_ptr<ProfileManager> profiles;
+    vector<ProfileManager::ProfileEntry> profile_entries;
+    void selectProfile(int idx);
 
     /*
      * constants for paint
