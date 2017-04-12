@@ -11,6 +11,7 @@
 
 #include <map>
 #include <utility>
+#include <cassert>
 
 using std::map;
 
@@ -132,23 +133,32 @@ bool ProfileManager::writeToFile(const QString &filepath) {
     return true;
 }
 
-QUuid ProfileManager::addProfile(const QJsonObject &chart_manager_settings,
-                                const QJsonArray &generator_types,
-                                const QJsonObject &generator_settings,
-                                const QString &name) {
+QUuid ProfileManager::addProfile(const ProfileContents& p, const QString &name) {
     QUuid uuid = QUuid::createUuid();
 
     QJsonObject profile;
     profile[KeyID] = uuid.toString();
-    profile[KeyChartManager] = chart_manager_settings;
-    profile[KeyGeneratorTypes] = generator_types;
-    profile[KeyGeneratorSettings] = generator_settings;
+    profile[KeyChartManager] = p.chart_manager_settings;
+    profile[KeyGeneratorTypes] = p.generator_types;
+    profile[KeyGeneratorSettings] = p.generator_settings;
     profile[KeyName] = name;
 
     order.push_back(uuid);
     profiles_arr.append(profile);
 
     return uuid;
+}
+
+void ProfileManager::updateProfile(const QUuid &profile_id, const ProfileContents &new_prof, const QString& new_name) {
+    int idx = find(profile_id);
+    if (idx >= 0) {
+        QJsonObject prof = profiles_arr[idx].toObject();
+        prof[KeyChartManager] = new_prof.chart_manager_settings;
+        prof[KeyGeneratorTypes] = new_prof.generator_types;
+        prof[KeyGeneratorSettings] = new_prof.generator_settings;
+        prof[KeyName] = new_name;
+        profiles_arr[idx] = prof;
+    }
 }
 
 void ProfileManager::removeProfile(const QUuid &profile_id) {
@@ -194,17 +204,17 @@ vector<ProfileManager::ProfileEntry> ProfileManager::getEntries() const {
     return res;
 }
 
-void ProfileManager::readProfile(const QUuid &profile_id,
-                                 QJsonObject &chart_manager_settings,
-                                 QJsonArray &generator_types,
-                                 QJsonObject &generator_settings) const {
+ProfileManager::ProfileContents ProfileManager::readProfile(const QUuid &profile_id) const {
+    ProfileContents res;
     int idx = find(profile_id);
     if (idx < 0) {
-        return;
+        return res;
     }
 
     QJsonObject profile = profiles_arr[idx].toObject();
-    chart_manager_settings = profile.value(KeyChartManager).toObject();
-    generator_types = profile.value(KeyGeneratorTypes).toArray();
-    generator_settings = profile.value(KeyGeneratorSettings).toObject();
+    res.chart_manager_settings = profile.value(KeyChartManager).toObject();
+    res.generator_types = profile.value(KeyGeneratorTypes).toArray();
+    res.generator_settings = profile.value(KeyGeneratorSettings).toObject();
+
+    return res;
 }

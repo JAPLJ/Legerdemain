@@ -26,12 +26,16 @@ public:
     void fromFile(const QString& filepath);
     bool writeToFile(const QString& filepath);
 
-    QUuid addProfile(const QJsonObject& chart_manager_settings,
-                     const QJsonArray& generator_types,
-                     const QJsonObject& generator_settings,
-                     const QString& name);
+    struct ProfileContents {
+        QJsonObject chart_manager_settings;
+        QJsonArray generator_types;
+        QJsonObject generator_settings;
+    };
+
+    QUuid addProfile(const ProfileContents& profile, const QString& name);
     void removeProfile(const QUuid& profile_id);
     void moveProfile(const QUuid& profile_id, int move);
+    void updateProfile(const QUuid& profile_id, const ProfileContents& new_profile, const QString& new_name);
     void changeName(const QUuid& profile_id, const QString& new_name);
 
     struct ProfileEntry {
@@ -40,10 +44,7 @@ public:
         ProfileEntry(const QUuid& id, const QString& name) : id(id), name(name) { }
     };
     vector<ProfileEntry> getEntries() const;
-    void readProfile(const QUuid& profile_id,
-                     QJsonObject& chart_manager_settings,
-                     QJsonArray& generator_types,
-                     QJsonObject& generator_settings) const;
+    ProfileContents readProfile(const QUuid& profile_id) const;
 };
 
 #endif // PROFILEMANAGER_H
