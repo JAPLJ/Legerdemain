@@ -15,6 +15,8 @@ public:
 
     static const QString FileColorSettings;
     static const QString FileProfiles;
+
+    static const QString ResourcePathPracticeCharts;
 };
 
 #endif // CONSTANTS_H
