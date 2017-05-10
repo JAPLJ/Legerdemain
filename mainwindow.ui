@@ -292,7 +292,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>60</y>
       <width>120</width>
       <height>191</height>
      </rect>
@@ -453,7 +453,7 @@
     <property name="geometry">
      <rect>
       <x>818</x>
-      <y>10</y>
+      <y>60</y>
       <width>120</width>
       <height>191</height>
      </rect>
@@ -752,6 +752,118 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QComboBox" name="comboBoxGen1P">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>121</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>H-RAN</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>RANループ</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="comboBoxGen2P">
+    <property name="geometry">
+     <rect>
+      <x>818</x>
+      <y>30</y>
+      <width>121</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>H-RAN</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>RANループ</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label1PGenerator">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>譜面生成タイプ(1P)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label2PGenerator">
+    <property name="geometry">
+     <rect>
+      <x>818</x>
+      <y>10</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>譜面生成タイプ(2P)</string>
+    </property>
+   </widget>
+   <widget class="LoopChartGeneratorConfigUI" name="groupBoxLoopGen1Pconfig">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>120</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>1P側譜面</string>
+    </property>
+    <widget class="QComboBoxLoopChartGeneratorType" name="comboBoxLoopGen1P">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>25</y>
+       <width>111</width>
+       <height>26</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="LoopChartGeneratorConfigUI" name="groupBoxLoopGen2Pconfig">
+    <property name="geometry">
+     <rect>
+      <x>818</x>
+      <y>60</y>
+      <width>120</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>2P側譜面</string>
+    </property>
+    <widget class="QComboBoxLoopChartGeneratorType" name="comboBoxLoopGen2P">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>25</y>
+       <width>111</width>
+       <height>26</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="enabled">
@@ -799,6 +911,17 @@
    <extends>QGroupBox</extends>
    <header>RandomChartGeneratorConfigUI.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LoopChartGeneratorConfigUI</class>
+   <extends>QGroupBox</extends>
+   <header>LoopChartGeneratorConfigUI.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QComboBoxLoopChartGeneratorType</class>
+   <extends>QComboBox</extends>
+   <header>LoopChartGeneratorConfigUI.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

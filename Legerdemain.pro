@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     Constants.cpp \
     ChartColorsDialog.cpp \
     ProfileManager.cpp \
-    LoopChartGenerator.cpp
+    LoopChartGenerator.cpp \
+    LoopChartGeneratorConfigUI.cpp
 
 HEADERS  += \
     RandomChartGenerator.h \
@@ -53,7 +54,8 @@ HEADERS  += \
     ChartColors.h \
     ChartColorsDialog.h \
     ProfileManager.h \
-    LoopChartGenerator.h
+    LoopChartGenerator.h \
+    LoopChartGeneratorConfigUI.h
 
 FORMS    += mainwindow.ui \
     ChartColorsDialog.ui

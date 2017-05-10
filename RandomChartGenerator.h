@@ -21,10 +21,11 @@ public:
 
     virtual QString getName() const;
 
+    static const QString GeneratorName;
+
 private:
     static const int numJsonEntries = 1;
     static const QString settingNames[numJsonEntries];
-    static const QString name;
 
     int density[5];
 };

@@ -55,6 +55,7 @@ public:
     double BPM() const;
     double greenNumber() const;
     int suddenPlus() const;
+    QString generatorName(int side) const;
 
     void setHighSpeed(double new_highspeed);
     void setBPM(double new_bpm);

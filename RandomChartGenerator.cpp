@@ -115,8 +115,8 @@ QJsonObject RandomChartGenerator::toJson() const {
     return settings;
 }
 
-const QString RandomChartGenerator::name = "random_chart_generator";
+const QString RandomChartGenerator::GeneratorName = "random_chart_generator";
 
 QString RandomChartGenerator::getName() const {
-    return name;
+    return GeneratorName;
 }

@@ -8,6 +8,7 @@
 #include "ChartColorsDialog.h"
 #include "ChartGenerator.h"
 #include "RandomChartGenerator.h"
+#include "LoopChartGenerator.h"
 #include "ChartManager.h"
 #include "Constants.h"
 #include "ProfileManager.h"
@@ -43,12 +44,21 @@ MainWindow::MainWindow(QWidget *parent) :
     lock_sudden_plus = false;
     lock_highspeed = false;
 
+    connect(ui->comboBoxGen1P, SIGNAL(currentIndexChanged(int)), this, SLOT(generator1PChanged(int)));
+    connect(ui->comboBoxGen2P, SIGNAL(currentIndexChanged(int)), this, SLOT(generator2PChanged(int)));
+
+    // timers
     timer = unique_ptr<QTimer>(new QTimer(this));
     connect(timer.get(), SIGNAL(timeout()), this, SLOT(proceedTime()));
     timer->start(Constants::MilliSecPerFrame);
 
+    // generators
     rand_gen1p = shared_ptr<RandomChartGenerator>(new RandomChartGenerator(100, 0, 0, 0, 0));
     rand_gen2p = shared_ptr<RandomChartGenerator>(new RandomChartGenerator(100, 0, 0, 0, 0));
+
+    LoopChartGenerator::loadPracticeCharts();
+    loop_gen1p = shared_ptr<LoopChartGenerator>(new LoopChartGenerator(""));
+    loop_gen2p = shared_ptr<LoopChartGenerator>(new LoopChartGenerator(""));
 
     gen1p = shared_ptr<ChartGenerator>(rand_gen1p);
     gen2p = shared_ptr<ChartGenerator>(rand_gen2p);
@@ -57,12 +67,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->groupBox1Pconfig->initialize(this, rand_gen1p, ui->spinBox1P0, ui->spinBox1P1, ui->spinBox1P2, ui->spinBox1P3, ui->spinBox1P4);
     ui->groupBox2Pconfig->initialize(this, rand_gen2p, ui->spinBox2P0, ui->spinBox2P1, ui->spinBox2P2, ui->spinBox2P3, ui->spinBox2P4);
+    ui->groupBoxLoopGen1Pconfig->initialize(this, loop_gen1p, ui->comboBoxLoopGen1P);
+    ui->groupBoxLoopGen2Pconfig->initialize(this, loop_gen2p, ui->comboBoxLoopGen2P);
     updateDensityDisplay();
 
+    // colors
     colors = ChartColors::fromFile(Constants::FileColorSettings);
     chart_bg = unique_ptr<QPixmap>(new QPixmap(WIDTH, HEIGHT));
     drawBackground();
 
+    // profiles
     profiles = unique_ptr<ProfileManager>(new ProfileManager());
     profiles->fromFile(Constants::FileProfiles);
     profile_entries = profiles->getEntries();
@@ -82,8 +96,55 @@ void MainWindow::selectProfile(int idx) {
     ui->spinBoxSuddenPlus->setValue(charts->suddenPlus());
     ui->checkBoxFixGreenNumber->setChecked(fix_green);
 
-    ui->groupBox1Pconfig->generatorUpdated();
-    ui->groupBox2Pconfig->generatorUpdated();
+    generatorChanged();
+}
+
+void MainWindow::generatorChanged() {
+    const QString gen1_name = charts->generatorName(0);
+    const QString gen2_name = charts->generatorName(1);
+
+    ui->groupBox1Pconfig->setHidden(true);
+    ui->groupBox2Pconfig->setHidden(true);
+    ui->groupBoxLoopGen1Pconfig->setHidden(true);
+    ui->groupBoxLoopGen2Pconfig->setHidden(true);
+
+    if (gen1_name == RandomChartGenerator::GeneratorName) {
+        ui->groupBox1Pconfig->generatorUpdated();
+        ui->groupBox1Pconfig->setHidden(false);
+    } else if (gen1_name == LoopChartGenerator::GeneratorName) {
+        ui->groupBoxLoopGen1Pconfig->generatorUpdated();
+        ui->groupBoxLoopGen1Pconfig->setHidden(false);
+    }
+
+    if (gen2_name == RandomChartGenerator::GeneratorName) {
+        ui->groupBox2Pconfig->generatorUpdated();
+        ui->groupBox2Pconfig->setHidden(false);
+    } else if (gen2_name == LoopChartGenerator::GeneratorName) {
+        ui->groupBoxLoopGen2Pconfig->generatorUpdated();
+        ui->groupBoxLoopGen2Pconfig->setHidden(false);
+    }
+
+    generatorSettingsChanged();
+}
+
+void MainWindow::generator1PChanged(int index) {
+    if (index == 0) {
+        gen1p = rand_gen1p;
+    } else if (index == 1) {
+        gen1p = loop_gen1p;
+    }
+    charts->setGenerator(0, gen1p);
+    generatorChanged();
+}
+
+void MainWindow::generator2PChanged(int index) {
+    if (index == 0) {
+        gen2p = rand_gen2p;
+    } else if (index == 1) {
+        gen2p = loop_gen2p;
+    }
+    charts->setGenerator(1, gen2p);
+    generatorChanged();
 }
 
 void MainWindow::drawBackground() {

@@ -47,6 +47,10 @@ double ChartManager::greenNumber() const {
     return Constants::GreenNumberCoef / (bpm * highspeed * sud_factor);
 }
 
+QString ChartManager::generatorName(int side) const {
+    return gen[side]->getName();
+}
+
 void ChartManager::setHighSpeed(double new_highspeed) {
     highspeed = new_highspeed;
     recalcVisibleNotes();

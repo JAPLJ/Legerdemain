@@ -107,6 +107,10 @@ vector<LoopChartGenerator::ChartEntry> LoopChartGenerator::getPracticeChartEntri
     return res;
 }
 
+QString LoopChartGenerator::selected() const {
+    return selected_chart_id;
+}
+
 void LoopChartGenerator::nextRandomLanes() {
     for (int i = 0; i < 7; ++i) {
         ran_lanes[i] = i;
@@ -124,7 +128,7 @@ void LoopChartGenerator::generate(Chart &chart, int bars) {
                     if (lane == 0) {
                         bar.note[lane][i] = 1;
                     } else {
-                        bar.note[ran_lanes[lane - 1]][i] = 1;
+                        bar.note[ran_lanes[lane - 1] + 1][i] = 1;
                     }
                 }
             }
@@ -146,7 +150,7 @@ const QString LoopChartGenerator::settingNames[LoopChartGenerator::numJsonEntrie
     "selected_chart_id"
 };
 
-const QString LoopChartGenerator::name = "loop_chart_generator";
+const QString LoopChartGenerator::GeneratorName = "loop_chart_generator";
 
 void LoopChartGenerator::fromJson(const QJsonObject &settings) {
     setChart(settings[settingNames[0]].toString());
@@ -159,5 +163,5 @@ QJsonObject LoopChartGenerator::toJson() const {
 }
 
 QString LoopChartGenerator::getName() const {
-    return name;
+    return GeneratorName;
 }

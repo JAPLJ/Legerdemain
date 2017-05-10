@@ -31,9 +31,10 @@ private:
 
     static const int numJsonEntries = 1;
     static const QString settingNames[numJsonEntries];
-    static const QString name;
 
 public:
+    static const QString GeneratorName;
+
     LoopChartGenerator(const QString& chart_id);
     void setChart(const QString& chart_id);
 
@@ -44,6 +45,8 @@ public:
         QString name;
     };
     static vector<ChartEntry> getPracticeChartEntries();
+
+    QString selected() const;
 
     virtual void generate(Chart& chart, int bars);
     virtual double expectedNotesPerBar() const;

@@ -7,6 +7,8 @@
 
 #include "ChartColors.h"
 #include "ChartGenerator.h"
+#include "RandomChartGenerator.h"
+#include "LoopChartGenerator.h"
 #include "ChartManager.h"
 #include "ProfileManager.h"
 #include "RandomChartGeneratorConfigUI.h"
@@ -42,6 +44,7 @@ private:
 
     shared_ptr<ChartGenerator> gen1p, gen2p;
     shared_ptr<RandomChartGenerator> rand_gen1p, rand_gen2p;
+    shared_ptr<LoopChartGenerator> loop_gen1p, loop_gen2p;
 
     unique_ptr<ChartManager> charts;
     int getNoteY(double timing, double past);
@@ -50,6 +53,7 @@ private:
     unique_ptr<ProfileManager> profiles;
     vector<ProfileManager::ProfileEntry> profile_entries;
     void selectProfile(int idx);
+    void generatorChanged();
 
     /*
      * constants for paint
@@ -79,6 +83,9 @@ private slots:
     void sliderSUDpChanged(int sudp);
     void spinBoxSUDpChanged(int sudp);
     void generatorSettingsChanged();
+
+    void generator1PChanged(int index);
+    void generator2PChanged(int index);
 
     void menuColorSettings();
 };
