@@ -47,3 +47,15 @@ void Chart::dropBars(int num_bars) {
         bars.pop_front();
     }
 }
+
+int Chart::notesCount() const {
+    int res = 0;
+    for (int i = 0; i < size(); ++i) {
+        for (int j = 0; j < 16; ++j) {
+            for (int k = 0; k < 8; ++k) {
+                res += (hasNote(i, j, k) ? 1 : 0);
+            }
+        }
+    }
+    return res;
+}

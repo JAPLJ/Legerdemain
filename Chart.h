@@ -20,6 +20,7 @@ public:
     int lastNotes() const;
     void clear();
     int size() const;
+    int notesCount() const;
     bool hasNote(int bar, int pos, int lane) const;
     void dropBars(int num_bars);
 };
