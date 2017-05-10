@@ -11,6 +11,7 @@ public:
     virtual double expectedNotesPerBar() const = 0;
     virtual void fromJson(const QJsonObject& settings) = 0;
     virtual QJsonObject toJson() const = 0;
+    virtual QString getName() const = 0;
 };
 
 #endif // CHARTGENERATOR_H

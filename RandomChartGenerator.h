@@ -19,7 +19,7 @@ public:
     virtual void fromJson(const QJsonObject &settings);
     virtual QJsonObject toJson() const;
 
-    static QString getName();
+    virtual QString getName() const;
 
 private:
     static const int numJsonEntries = 1;

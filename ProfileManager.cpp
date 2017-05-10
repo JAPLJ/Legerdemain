@@ -12,7 +12,9 @@
 #include <map>
 #include <utility>
 #include <cassert>
+#include <memory>
 
+using std::unique_ptr;
 using std::map;
 
 static const QString defaultProfileName = "default";
@@ -45,8 +47,9 @@ QJsonObject ProfileManager::defaultProfile() {
     empty_profile[KeyChartManager] = QJsonObject();
 
     QJsonArray default_generator_types;
-    default_generator_types.append(RandomChartGenerator::getName());
-    default_generator_types.append(RandomChartGenerator::getName());
+    unique_ptr<RandomChartGenerator> default_gen(new RandomChartGenerator(0, 0, 0, 0, 0));
+    default_generator_types.append(default_gen->getName());
+    default_generator_types.append(default_gen->getName());
 
     empty_profile[KeyGeneratorTypes] = default_generator_types;
     empty_profile[KeyGeneratorSettings] = QJsonObject();
