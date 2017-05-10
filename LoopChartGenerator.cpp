@@ -79,17 +79,22 @@ void LoopChartGenerator::loadPracticeCharts() {
 }
 
 void LoopChartGenerator::setChart(const QString &chart_id) {
+    bool matched = false;
     for (const auto& chart : practice_charts) {
-        if (chart.id == chart_id) {
+        if (!matched || chart.id == chart_id) {
             selected_chart = chart.chart;
             selected_chart_id = chart_id;
             notes_in_selected_chart = selected_chart.notesCount();
             current_bar = 0;
             nextRandomLanes();
-            return;
+            if (!matched) {
+                matched = true;
+            }
+            if (chart.id == chart_id) {
+                return;
+            }
         }
     }
-    assert(false);
 }
 
 vector<LoopChartGenerator::ChartEntry> LoopChartGenerator::getPracticeChartEntries() {
