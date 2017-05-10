@@ -22,8 +22,6 @@ private:
     };
     static vector<PracticeChartData> practice_charts;
 
-    static void loadPracticeCharts();
-
     Chart selected_chart;
     QString selected_chart_id;
     int notes_in_selected_chart;
@@ -39,6 +37,8 @@ public:
     LoopChartGenerator(const QString& chart_id);
     void setChart(const QString& chart_id);
 
+    static void loadPracticeCharts();
+
     struct ChartEntry {
         QString id;
         QString name;
@@ -49,6 +49,7 @@ public:
     virtual double expectedNotesPerBar() const;
     virtual void fromJson(const QJsonObject& settings);
     virtual QJsonObject toJson() const;
+    virtual QString getName() const;
 };
 
 #endif // LOOPCHARTGENERATOR_H

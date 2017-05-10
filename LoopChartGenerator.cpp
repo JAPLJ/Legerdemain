@@ -157,3 +157,7 @@ QJsonObject LoopChartGenerator::toJson() const {
     settings[settingNames[0]] = selected_chart_id;
     return settings;
 }
+
+QString LoopChartGenerator::getName() const {
+    return name;
+}
